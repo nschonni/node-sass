@@ -1,0 +1,93 @@
+{
+  "name": "node-sass",
+  "version": "0.6.7",
+  "dependencies": {
+    "mkdirp": {
+      "version": "0.3.5",
+      "from": "mkdirp@0.3.x"
+    },
+    "colors": {
+      "version": "0.6.0-1",
+      "from": "colors@0.6.0-1"
+    },
+    "optimist": {
+      "version": "0.6.0",
+      "from": "optimist@0.6.x",
+      "dependencies": {
+        "wordwrap": {
+          "version": "0.0.2",
+          "from": "wordwrap@~0.0.2"
+        },
+        "minimist": {
+          "version": "0.0.5",
+          "from": "minimist@~0.0.1"
+        }
+      }
+    },
+    "node-watch": {
+      "version": "0.3.4",
+      "from": "node-watch@0.3.x"
+    },
+    "mocha": {
+      "version": "1.13.0",
+      "from": "mocha@1.13.x",
+      "dependencies": {
+        "commander": {
+          "version": "1.1.0",
+          "from": "commander@1.1.x"
+        },
+        "growl": {
+          "version": "1.7.0",
+          "from": "growl@1.7.x"
+        },
+        "jade": {
+          "version": "0.26.3",
+          "from": "jade@0.26.3",
+          "dependencies": {
+            "mkdirp": {
+              "version": "0.3.0",
+              "from": "mkdirp@0.3.0",
+              "resolved": "https://registry.npmjs.org/mkdirp/-/mkdirp-0.3.0.tgz"
+            }
+          }
+        },
+        "diff": {
+          "version": "1.0.7",
+          "from": "diff@1.0.7"
+        },
+        "debug": {
+          "version": "0.7.2",
+          "from": "debug@*"
+        },
+        "glob": {
+          "version": "3.2.3",
+          "from": "glob@3.2.3",
+          "dependencies": {
+            "minimatch": {
+              "version": "0.2.12",
+              "from": "minimatch@~0.2.11",
+              "dependencies": {
+                "lru-cache": {
+                  "version": "2.3.1",
+                  "from": "lru-cache@2"
+                },
+                "sigmund": {
+                  "version": "1.0.0",
+                  "from": "sigmund@~1.0.0"
+                }
+              }
+            },
+            "graceful-fs": {
+              "version": "2.0.1",
+              "from": "graceful-fs@~2.0.0"
+            },
+            "inherits": {
+              "version": "2.0.1",
+              "from": "inherits@2"
+            }
+          }
+        }
+      }
+    }
+  }
+}
