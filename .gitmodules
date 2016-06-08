@@ -1,3 +1,6 @@
 [submodule "libsass"]
-	path = libsass
-	url = git://github.com/hcatlin/libsass.git
+	path = src/libsass
+	url = git://github.com/sass/libsass.git
+[submodule "test/sass-spec"]
+	path = test/fixtures/spec
+	url = https://github.com/sass/sass-spec.git
