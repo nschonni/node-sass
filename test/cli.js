@@ -18,7 +18,7 @@ describe('cli', function() {
     it('should read data from stdin', function(done) {
       var src = fs.createReadStream(fixture('simple/index.scss'));
       var expected = read(fixture('simple/expected.css'), 'utf8').trim();
-      var bin = spawn(cli);
+      var bin = spawn(cli, {shell: true});
 
       bin.stdout.setEncoding('utf8');
       bin.stdout.once('data', function(data) {
@@ -32,7 +32,7 @@ describe('cli', function() {
     it('should compile sass using the --indented-syntax option', function(done) {
       var src = fs.createReadStream(fixture('indent/index.sass'));
       var expected = read(fixture('indent/expected.css'), 'utf8').trim();
-      var bin = spawn(cli, ['--indented-syntax']);
+      var bin = spawn(cli, ['--indented-syntax'], {shell: true});
 
       bin.stdout.setEncoding('utf8');
       bin.stdout.once('data', function(data) {
@@ -46,7 +46,7 @@ describe('cli', function() {
     it('should compile with the --quiet option', function(done) {
       var src = fs.createReadStream(fixture('simple/index.scss'));
       var expected = read(fixture('simple/expected.css'), 'utf8').trim();
-      var bin = spawn(cli, ['--quiet']);
+      var bin = spawn(cli, ['--quiet'], {shell: true});
 
       bin.stdout.setEncoding('utf8');
       bin.stdout.once('data', function(data) {
@@ -60,7 +60,7 @@ describe('cli', function() {
     it('should compile with the --output-style option', function(done) {
       var src = fs.createReadStream(fixture('compressed/index.scss'));
       var expected = read(fixture('compressed/expected.css'), 'utf8').trim();
-      var bin = spawn(cli, ['--output-style', 'compressed']);
+      var bin = spawn(cli, ['--output-style', 'compressed'], {shell: true});
 
       bin.stdout.setEncoding('utf8');
       bin.stdout.once('data', function(data) {
@@ -74,7 +74,7 @@ describe('cli', function() {
     it('should compile with the --source-comments option', function(done) {
       var src = fs.createReadStream(fixture('source-comments/index.scss'));
       var expected = read(fixture('source-comments/expected.css'), 'utf8').trim();
-      var bin = spawn(cli, ['--source-comments']);
+      var bin = spawn(cli, ['--source-comments'], {shell: true});
 
       bin.stdout.setEncoding('utf8');
       bin.stdout.once('data', function(data) {
@@ -87,7 +87,7 @@ describe('cli', function() {
 
     it('should render with indentWidth and indentType options', function(done) {
       var src = new stream.Readable();
-      var bin = spawn(cli, ['--indent-width', 7, '--indent-type', 'tab']);
+      var bin = spawn(cli, ['--indent-width', 7, '--indent-type', 'tab'], {shell: true});
 
       src._read = function() { };
       src.push('div { color: transparent; }');
@@ -104,7 +104,7 @@ describe('cli', function() {
 
     it('should render with linefeed option', function(done) {
       var src = new stream.Readable();
-      var bin = spawn(cli, ['--linefeed', 'lfcr']);
+      var bin = spawn(cli, ['--linefeed', 'lfcr'], {shell: true});
 
       src._read = function() { };
       src.push('div { color: transparent; }');
@@ -126,7 +126,7 @@ describe('cli', function() {
 
       var src = fixture('simple/index.scss');
       var dest = fixture('simple/index.css');
-      var bin = spawn(cli, [src, dest]);
+      var bin = spawn(cli, [src, dest], {shell: true});
 
       bin.once('close', function() {
         assert(fs.existsSync(dest));
@@ -141,7 +141,7 @@ describe('cli', function() {
 
       var src = fixture('simple/index.scss');
       var dest = fixture('simple/index-custom.css');
-      var bin = spawn(cli, [src, dest]);
+      var bin = spawn(cli, [src, dest], {shell: true});
 
       bin.once('close', function() {
         assert(fs.existsSync(dest));
@@ -159,7 +159,7 @@ describe('cli', function() {
 
       var src = fixture('include-path/index.scss');
       var expected = read(fixture('include-path/expected.css'), 'utf8').trim();
-      var bin = spawn(cli, [src].concat(includePaths));
+      var bin = spawn(cli, [src].concat(includePaths), {shell: true});
 
       bin.stdout.setEncoding('utf8');
       bin.stdout.once('data', function(data) {
@@ -173,7 +173,7 @@ describe('cli', function() {
 
       var src = fixture('simple/index.scss');
       var dest = fixture('simple/index.css');
-      var bin = spawn(cli, [src, dest, '--quiet']);
+      var bin = spawn(cli, [src, dest, '--quiet'], {shell: true});
       var didEmit = false;
 
       bin.stderr.once('data', function() {
@@ -193,7 +193,7 @@ describe('cli', function() {
 
       var src = fixture('invalid/index.scss');
       var dest = fixture('invalid/index.css');
-      var bin = spawn(cli, [src, dest, '--quiet']);
+      var bin = spawn(cli, [src, dest, '--quiet'], {shell: true});
       var didEmit = false;
 
       bin.stderr.once('data', function() {
@@ -209,7 +209,7 @@ describe('cli', function() {
 
     it('should not exit with the --watch option', function(done) {
       var src = fixture('simple/index.scss');
-      var bin = spawn(cli, [src, '--watch']);
+      var bin = spawn(cli, [src, '--watch'], {shell: true});
       var exited;
 
       bin.once('close', function() {
@@ -231,7 +231,7 @@ describe('cli', function() {
 
       fs.writeFileSync(src, '');
 
-      var bin = spawn(cli, ['--watch', src]);
+      var bin = spawn(cli, ['--watch', src], {shell: true});
 
       bin.stderr.setEncoding('utf8');
       bin.stderr.once('data', function(data) {
@@ -251,7 +251,7 @@ describe('cli', function() {
       var didEmit = false;
       fs.writeFileSync(src, '');
 
-      var bin = spawn(cli, ['--watch', '--quiet', src]);
+      var bin = spawn(cli, ['--watch', '--quiet', src], {shell: true});
 
       bin.stderr.setEncoding('utf8');
       bin.stderr.once('data', function() {
@@ -277,7 +277,7 @@ describe('cli', function() {
       var bin = spawn(cli, [
         '--output-style', 'compressed',
         '--watch', src
-      ]);
+      ], {shell: true});
 
       bin.stdout.setEncoding('utf8');
       bin.stdout.once('data', function(data) {
@@ -301,7 +301,7 @@ describe('cli', function() {
       var bin = spawn(cli, [
         '--output-style', 'compressed',
         '--watch', src
-      ]);
+      ], {shell: true});
 
       bin.stdout.setEncoding('utf8');
       bin.stdout.once('data', function(data) {
@@ -324,7 +324,7 @@ describe('cli', function() {
       var bin = spawn(cli, [
         '--output-style', 'compressed',
         '--watch', src
-      ]);
+      ], {shell: true});
 
       bin.stdout.setEncoding('utf8');
       bin.stdout.once('data', function(data) {
@@ -351,7 +351,7 @@ describe('cli', function() {
         '--output-style', 'compressed',
         '--output', destDir,
         '--watch', srcDir
-      ]);
+      ], {shell: true});
 
       setTimeout(function() {
         fs.appendFileSync(srcFile, 'a {color:green;}\n');
@@ -375,7 +375,7 @@ describe('cli', function() {
         '--output-style', 'compressed',
         '--output', destDir,
         '--watch', srcDir
-      ]);
+      ], {shell: true});
 
       setTimeout(function () {
         fs.appendFileSync(srcFile, 'body{background:white}\n');
@@ -393,7 +393,7 @@ describe('cli', function() {
     it('should compile a scss file to build.css', function(done) {
       var src = fixture('simple/index.scss');
       var dest = fixture('simple/index.css');
-      var bin = spawn(cli, [src, '--output', path.dirname(dest)]);
+      var bin = spawn(cli, [src, '--output', path.dirname(dest)], {shell: true});
 
       bin.once('close', function() {
         assert(fs.existsSync(dest));
@@ -408,7 +408,7 @@ describe('cli', function() {
       var destMap = fixture('source-map/index.map');
       var expectedCss = read(fixture('source-map/expected.css'), 'utf8').trim().replace(/\r\n/g, '\n');
       var expectedMap = read(fixture('source-map/expected.map'), 'utf8').trim().replace(/\r\n/g, '\n');
-      var bin = spawn(cli, [src, '--output', path.dirname(destCss), '--source-map', destMap]);
+      var bin = spawn(cli, [src, '--output', path.dirname(destCss), '--source-map', destMap], {shell: true});
 
       bin.once('close', function() {
         assert.equal(read(destCss, 'utf8').trim(), expectedCss);
@@ -426,7 +426,7 @@ describe('cli', function() {
       var bin = spawn(cli, [
         src, '--output', path.dirname(dest),
         '--source-map', map, '--omit-source-map-url'
-      ]);
+      ], {shell: true});
 
       bin.once('close', function() {
         assert.strictEqual(read(dest, 'utf8').indexOf('sourceMappingURL'), -1);
@@ -447,7 +447,7 @@ describe('cli', function() {
         src, '--output', path.dirname(destCss),
         '--source-map-root', expectedUrl,
         '--source-map', destMap
-      ]);
+      ], {shell: true});
 
       bin.once('close', function() {
         assert.equal(read(destCss, 'utf8').trim(), expectedCss);
@@ -466,7 +466,7 @@ describe('cli', function() {
         src,
         '--source-map-embed',
         '--source-map', 'true'
-      ]);
+      ], {shell: true});
 
       bin.stdout.on('data', function(data) {
         result += data;
@@ -483,7 +483,7 @@ describe('cli', function() {
     it('should create the output directory', function(done) {
       var src = fixture('input-directory/sass');
       var dest = fixture('input-directory/css');
-      var bin = spawn(cli, [src, '--output', dest]);
+      var bin = spawn(cli, [src, '--output', dest], {shell: true});
 
       bin.once('close', function() {
         assert(fs.existsSync(dest));
@@ -495,7 +495,7 @@ describe('cli', function() {
     it('should compile all files in the folder', function(done) {
       var src = fixture('input-directory/sass');
       var dest = fixture('input-directory/css');
-      var bin = spawn(cli, [src, '--output', dest]);
+      var bin = spawn(cli, [src, '--output', dest], {shell: true});
 
       bin.once('close', function() {
         var files = fs.readdirSync(dest).sort();
@@ -511,7 +511,7 @@ describe('cli', function() {
       var src = fixture('input-directory/sass');
       var dest = fixture('input-directory/css');
       var destMap = fixture('input-directory/map');
-      var bin = spawn(cli, [src, '--output', dest, '--source-map', destMap]);
+      var bin = spawn(cli, [src, '--output', dest, '--source-map', destMap], {shell: true});
 
       bin.once('close', function() {
         var map = JSON.parse(read(fixture('input-directory/map/nested/three.css.map'), 'utf8'));
@@ -526,7 +526,7 @@ describe('cli', function() {
     it('should skip files with an underscore', function(done) {
       var src = fixture('input-directory/sass');
       var dest = fixture('input-directory/css');
-      var bin = spawn(cli, [src, '--output', dest]);
+      var bin = spawn(cli, [src, '--output', dest], {shell: true});
 
       bin.once('close', function() {
         var files = fs.readdirSync(dest);
@@ -542,7 +542,7 @@ describe('cli', function() {
       var bin = spawn(cli, [
         src, '--output', dest,
         '--recursive', false
-      ]);
+      ], {shell: true});
 
       bin.once('close', function() {
         var files = fs.readdirSync(dest);
@@ -554,7 +554,7 @@ describe('cli', function() {
 
     it('should error if no output directory is provided', function(done) {
       var src = fixture('input-directory/sass');
-      var bin = spawn(cli, [src]);
+      var bin = spawn(cli, [src], {shell: true});
 
       bin.once('close', function(code) {
         assert.notStrictEqual(code, 0);
@@ -566,7 +566,7 @@ describe('cli', function() {
     it('should error if output directory is not a directory', function(done) {
       var src = fixture('input-directory/sass');
       var dest = fixture('input-directory/sass/one.scss');
-      var bin = spawn(cli, [src, '--output', dest]);
+      var bin = spawn(cli, [src, '--output', dest], {shell: true});
 
       bin.once('close', function(code) {
         assert.notStrictEqual(code, 0);
@@ -581,7 +581,7 @@ describe('cli', function() {
       var symlink = fixture('symlinked-css');
       fs.mkdirSync(outputDir);
       fs.symlinkSync(outputDir, symlink);
-      var bin = spawn(cli, [src, '--output', symlink]);
+      var bin = spawn(cli, [src, '--output', symlink], {shell: true});
 
       bin.once('close', function() {
         var files = fs.readdirSync(outputDir).sort();
@@ -599,7 +599,7 @@ describe('cli', function() {
     it('should create the output directory', function(done) {
       var src = fixture('output-directory/index.scss');
       var dest = fixture('output-directory/path/to/file/index.css');
-      var bin = spawn(cli, [src, '--output', path.dirname(dest)]);
+      var bin = spawn(cli, [src, '--output', path.dirname(dest)], {shell: true});
 
       bin.once('close', function() {
         assert(fs.existsSync(path.dirname(dest)));
@@ -623,7 +623,7 @@ describe('cli', function() {
       fs.mkdirSync(src);
       fs.symlinkSync(path.join(path.dirname(src), 'foo'), path.join(src, 'foo'), 'dir');
 
-      var bin = spawn(cli, [src, '--follow', '--output', dest]);
+      var bin = spawn(cli, [src, '--follow', '--output', dest], {shell: true});
 
       bin.once('close', function() {
         var expected = path.join(dest, 'foo/bar/index.css');
@@ -650,7 +650,7 @@ describe('cli', function() {
       var bin = spawn(cli, [
         src, '--output', path.dirname(dest),
         '--importer', fixture('extras/my_custom_importer_file_and_data_cb.js')
-      ]);
+      ], {shell: true});
 
       bin.once('close', function() {
         assert.equal(read(dest, 'utf8').trim(), expected);
@@ -663,7 +663,7 @@ describe('cli', function() {
       var bin = spawn(cli, [
         src, '--output', path.dirname(dest),
         '--importer', fixture('extras/my_custom_importer_file_cb.js')
-      ]);
+      ], {shell: true});
 
       bin.once('close', function() {
         if (fs.existsSync(dest)) {
@@ -679,7 +679,7 @@ describe('cli', function() {
       var bin = spawn(cli, [
         src, '--output', path.dirname(dest),
         '--importer', fixture('extras/my_custom_importer_data_cb.js')
-      ]);
+      ], {shell: true});
 
       bin.once('close', function() {
         assert.equal(read(dest, 'utf8').trim(), expected);
@@ -692,7 +692,7 @@ describe('cli', function() {
       var bin = spawn(cli, [
         src, '--output', path.dirname(dest),
         '--importer', fixture('extras/my_custom_importer_file_and_data.js')
-      ]);
+      ], {shell: true});
 
       bin.once('close', function() {
         assert.equal(read(dest, 'utf8').trim(), expected);
@@ -705,7 +705,7 @@ describe('cli', function() {
       var bin = spawn(cli, [
         src, '--output', path.dirname(dest),
         '--importer', fixture('extras/my_custom_importer_file.js')
-      ]);
+      ], {shell: true});
 
       bin.once('close', function() {
         if (fs.existsSync(dest)) {
@@ -721,7 +721,7 @@ describe('cli', function() {
       var bin = spawn(cli, [
         src, '--output', path.dirname(dest),
         '--importer', fixture('extras/my_custom_importer_data.js')
-      ]);
+      ], {shell: true});
 
       bin.once('close', function() {
         assert.equal(read(dest, 'utf8').trim(), expected);
@@ -734,7 +734,7 @@ describe('cli', function() {
       var bin = spawn(cli, [
         src, '--output', path.dirname(dest),
         '--importer', fixture('extras/my_custom_arrays_of_importers.js')
-      ]);
+      ], {shell: true});
 
       bin.once('close', function() {
         assert.equal(read(dest, 'utf8').trim(), expected);
@@ -747,7 +747,7 @@ describe('cli', function() {
       var bin = spawn(cli, [
         src, '--output', path.dirname(dest),
         '--importer', fixture('non/existing/path')
-      ]);
+      ], {shell: true});
 
       bin.once('close', function(code) {
         assert.notStrictEqual(code, 0);
@@ -759,7 +759,7 @@ describe('cli', function() {
       var bin = spawn(cli, [
         src, '--output', path.dirname(dest),
         '--importer', fixture('extras/my_custom_importer_error.js')
-      ]);
+      ], {shell: true});
 
       bin.stderr.once('data', function(code) {
         assert.equal(JSON.parse(code).message, 'doesn\'t exist!');
@@ -776,7 +776,7 @@ describe('cli', function() {
       var bin = spawn(cli, [
         src, '--output', path.dirname(dest),
         '--functions', fixture('extras/my_custom_functions_setter.js')
-      ]);
+      ], {shell: true});
 
       bin.once('close', function() {
         assert.equal(read(dest, 'utf8').trim(), expected);
@@ -792,7 +792,7 @@ describe('cli', function() {
       var bin = spawn(cli, [
         src, '--output', path.dirname(dest),
         '--functions', fixture('extras/my_custom_functions_string_conversion.js')
-      ]);
+      ], {shell: true});
 
       bin.once('close', function() {
         assert.equal(read(dest, 'utf8').trim(), expected);
