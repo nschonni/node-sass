@@ -8,7 +8,7 @@ platform:
 
 steps:
 - name: test
-  image: node:6
+  image: node
   commands:
   - npm install
   - npm test
