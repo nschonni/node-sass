@@ -15,7 +15,7 @@ steps:
   - name: vendor
     path: /drone/src/vendor
   commands:
-  - apt-get python make g++
+  - apt-get install python make g++
   - npm install
   - npm test
 # ---
