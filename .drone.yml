@@ -1,5 +1,6 @@
+---
 kind: pipeline
-name: test-on-arm64
+name: node6-arm64
 
 platform:
   arch: arm64
@@ -7,6 +8,19 @@ platform:
 steps:
 - name: test
   image: node:6
+  commands:
+  - npm install
+  - npm test
+---
+kind: pipeline
+name: node8-arm64
+
+platform:
+  arch: arm64
+
+steps:
+- name: test
+  image: node:8
   commands:
   - npm install
   - npm test
