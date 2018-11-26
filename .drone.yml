@@ -3,6 +3,7 @@ kind: pipeline
 name: node6-arm64
 
 platform:
+  os: linux
   arch: arm64
 
 steps:
@@ -16,6 +17,7 @@ kind: pipeline
 name: node8-arm64
 
 platform:
+  os: linux
   arch: arm64
 
 steps:
