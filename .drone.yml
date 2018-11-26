@@ -9,6 +9,9 @@ platform:
 steps:
 - name: test
   image: arm64v8/node:6
+  volumes:
+  - name: vendor
+    path: /drone/src/vendor
   commands:
   - npm install
   - npm test
