@@ -9,7 +9,7 @@ platform:
 steps:
 - name: test
   image: arm64v8/node:6
-  environment:
+  env:
   - SKIP_SASS_BINARY_DOWNLOAD_FOR_CI=true
   volumes:
   - name: vendor
