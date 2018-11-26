@@ -15,8 +15,7 @@ steps:
   - name: vendor
     path: /drone/src/vendor
   commands:
-  - apt-get install python make g++
-  - npm install
+  - npm install --unsafe-perm
   - npm test
 # ---
 # kind: pipeline
