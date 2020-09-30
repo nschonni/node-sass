@@ -1,0 +1,37 @@
+name: Prebuilds
+
+on:
+  push:
+    paths:
+      - ".github/workflows/prebuilds.yml"
+  pull_request:
+    paths:
+      - ".github/workflows/prebuilds.yml"
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+        fail-fast: false
+        matrix:
+          os:
+            - ubuntu-latest
+            - ox-latest
+            - windows-2016
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install packages
+        run: npm install --unsafe-perm
+
+      - name: Run Prebuild
+        run: |
+          npm i -g prebuild
+          prebuild --all
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: ${{ matrix.node }}
+          path: |
+            prebuilds/**
