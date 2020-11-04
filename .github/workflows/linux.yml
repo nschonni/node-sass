@@ -8,7 +8,9 @@ on:
 
 jobs:
   build:
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
+    container:
+      image: ${{ matrix.image }}
 
     strategy:
       fail-fast: false
@@ -21,47 +23,43 @@ jobs:
 
         include:
           - node: 10
-            gcc: "gcc-4.9"
-            gpp: "g++-4.9"
-            os: ubuntu-16.04
+            devtoolset: devtoolset-6
+            image: centos:6
           - node: 12
-            gcc: "gcc-6"
-            gpp: "g++-6"
-            os: ubuntu-18.04
+            devtoolset: devtoolset-6
+            image: centos:7
           - node: 14
-            gcc: "gcc-6"
-            gpp: "g++-6"
-            os: ubuntu-18.04
+            devtoolset: devtoolset-8
+            image: centos:7
           - node: 15
-            gcc: "gcc-6"
-            gpp: "g++-6"
-            os: ubuntu-18.04
+            devtoolset: devtoolset-8
+            image: centos:7
 
     steps:
+      - name: Install Node build tools
+        run: |
+          yum update -y
+          curl –sL https://rpm.nodesource.com/setup_${{ matrix.node }}.x | bash -
+          yum install -y centos-release-scl
+          yum list devtoolset-6\*
+          yum install -y ${{ matrix.devtoolset }}
+          yum list devtoolset-6\*
+          yum install -y nodejs
+          yum clean all
+          scl enable ${{ matrix.devtoolset }}
+
       - uses: actions/checkout@v2
-
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v2.1.2
-        with:
-          node-version: ${{ matrix.node }}
-
-      - name: Setup GCC/G++
-        run: sudo apt-get install ${{ matrix.gcc }} ${{ matrix.gpp }}
 
       - name: Install packages
         run: npm install --unsafe-perm
         env:
           SKIP_SASS_BINARY_DOWNLOAD_FOR_CI: true
-          CC: ${{ matrix.gcc }}
-          CXX: ${{ matrix.gpp }}
-          LINK: ${{ matrix.gcc }}
-          LINKXX: ${{ matrix.gpp }}
 
       - name: Run tests
         run: npm test
 
       - uses: actions/upload-artifact@v2
-        if: github.repository_owner == 'sass' && github.event_name != 'pull_request'
+        # if: github.repository_owner == 'sass' && github.event_name != 'pull_request'
         with:
           name: ${{ matrix.node }}
           path: vendor/
